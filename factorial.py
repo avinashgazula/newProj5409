@@ -2,8 +2,10 @@ import sys
 from timeit import Timer
 import csv
 import matplotlib.pyplot as plt
+import random
 sys.setrecursionlimit(150000)
 
+# returns the factorial of a number
 def factorial(n):
     if n == 1:
         return 1
@@ -12,16 +14,17 @@ def factorial(n):
 values = []
 bins = []
 
-with open('C:/Users/Avinash/Desktop/factorial_times.csv', 'w', newline='') as file:
+with open('factorial_log.csv', 'w', newline='') as file:
     writer = csv.writer(file)
-    with open("C:/Users/Avinash/Desktop/values.txt", 'r') as f:
+    with open("values.txt", 'r') as f:
         for n in f:
+            # returns the average execution time for 20 executions
             t = Timer(lambda: factorial(int(n)))
-            print(t.timeit(number=1))
+            time = t.timeit(number=20)
             values.append(int(n))
-            bins.append(t.timeit(number=1))
-            # plt.scatter(int(n), t.timeit(number=1))
-            writer.writerow([n.strip(), t.timeit(number=1)])
+            bins.append(time)
+            # write to a log file
+            writer.writerow([random.randint(0,100000), n.strip(), time])
 
     plt.bar(values, bins)
     plt.show()
